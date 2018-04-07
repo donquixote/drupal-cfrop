@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_cfrplugin_info().
+ *
+ * @return array[][]
+ */
+function cfrop_example_cfrplugin_info() {
+  return cfrplugindiscovery()->moduleFileScanPsr4(__FILE__);
+}

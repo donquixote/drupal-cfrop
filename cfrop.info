@@ -1,0 +1,9 @@
+name = Cfr Operation
+description = Exposes annotated Operation* objects as Cfr plugins.
+core = 7.x
+
+configure = admin/operations/cfrop
+
+dependencies[] = cfrplugin
+dependencies[] = cfrplugindiscovery
+dependencies[] = xautoload

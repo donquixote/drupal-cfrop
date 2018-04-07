@@ -1,0 +1,60 @@
+<?php
+
+use Drupal\cfrop\Hub\CfropHub;
+
+/**
+ * Implements hook_cfrplugin_info().
+ *
+ * @return array[][]
+ *   Format: $[$pluginType][$pluginId] = $pluginDefinition
+ */
+function cfrop_cfrplugin_info() {
+  return cfrplugindiscovery()->moduleFileScanPsr4(__FILE__);
+}
+
+/**
+ * @return \Drupal\cfrop\Hub\CfropHubInterface
+ */
+function cfrop() {
+  static $hub;
+  return $hub ?? $hub = CfropHub::create();
+}
+
+/**
+ * Implements hook_menu().
+ */
+function cfrop_menu() {
+  $items = [];
+  $items['admin/operations'] = [
+    'title' => t('Operations'),
+    'position' => 'right',
+    'weight' => -8,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  ];
+  $items['admin/operations/cfrop'] = [
+    'title' => 'Run operation (cfrop)',
+    /* @see drupal_get_form() */
+    'page callback' => 'drupal_get_form',
+    /* @see cfrop_operation_form() */
+    'page arguments' => ['cfrop_operation_form'],
+    'file' => 'cfrop.pages.operation_form.inc',
+    'access arguments' => ['administer site configuration'],
+  ];
+  return $items;
+}
+
+/**
+ * Implements hook_admin_menu_output_alter().
+ *
+ * @param array[][][] $content
+ *   Format: $[$type][$key] = $item
+ */
+function cfrop_admin_menu_output_alter(array &$content) {
+  if (isset($content['menu']['admin/operations'])) {
+    $content['icon']['icon']['admin/operations'] = $content['menu']['admin/operations'];
+    unset($content['menu']['admin/operations']);
+  }
+}

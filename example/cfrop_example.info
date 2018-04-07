@@ -1,0 +1,5 @@
+name = Cfr Operation Example
+description = Example operations
+core = 7.x
+
+dependencies[] = cfrop
