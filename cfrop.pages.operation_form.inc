@@ -22,6 +22,10 @@ function cfrop_operation_form(array $form, array &$form_state) {
     '#default_value' => NULL,
   ];
 
+  if (isset($_GET['operation'])) {
+    $form['operation']['#default_value'] = $_GET['operation'];
+  }
+
   $form['actions'] = ['#type' => 'actions'];
   $form['actions']['submit'] = [
     '#type' => 'submit',
@@ -60,6 +64,8 @@ function cfrop_operation_form_validate(array $form, array &$form_state) {
 function cfrop_operation_form_submit(array $form, array &$form_state) {
 
   $conf = $form_state['values']['operation'];
+
+  $form_state['redirect'] = [$_GET['q'], ['query' => ['operation' => $conf]]];
 
   try {
     $op = cfrop()->confGetOperation($conf);
